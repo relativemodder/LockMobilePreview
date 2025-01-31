@@ -14,24 +14,26 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
     bool init(LevelEditorLayer* lel) {
         if (!EditorUI::init(lel)) return false;
         m_fields->keyboardDispatcher = CCKeyboardDispatcher::get();
+        setupUI();
 
+        return true;
+    }
+
+    void setupUI() {
         auto settingsMenu = dynamic_cast<CCMenu*>(getChildByIDRecursive("settings-menu"));
 
         if (!settingsMenu) {
             log::error("Well, couldn't find settings-menu");
-            return true;
+            return;
         }
 
         auto initialSprite = CCSprite::createWithSpriteFrameName("GJ_lock_open_001.png");
         
         m_fields->lockButton = CCMenuItemSpriteExtra::create(
             initialSprite, this,
-            menu_selector(LockMobilePreviewLayer::onToggleLock)
-            );
+            menu_selector(LockMobilePreviewLayer::onToggleLock));
         settingsMenu->addChild(m_fields->lockButton);
         settingsMenu->updateLayout();
-
-        return true;
     }
 
     void updateLockButtonSprite() {
