@@ -12,10 +12,10 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
     };
     
     bool init(LevelEditorLayer* lel) {
-        EditorUI::init(lel);
+        if (!EditorUI::init(lel)) return false;
         m_fields->keyboardDispatcher = CCKeyboardDispatcher::get();
 
-        auto settingsMenu = static_cast<CCMenu*>(getChildByIDRecursive("settings-menu"));
+        auto settingsMenu = dynamic_cast<CCMenu*>(getChildByIDRecursive("settings-menu"));
 
         if (!settingsMenu) {
             log::error("Well, couldn't find settings-menu");
