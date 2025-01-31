@@ -13,7 +13,6 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
     
     bool init(LevelEditorLayer* lel) {
         EditorUI::init(lel);
-
         m_fields->keyboardDispatcher = CCKeyboardDispatcher::get();
 
         auto settingsMenu = static_cast<CCMenu*>(getChildByIDRecursive("settings-menu"));
@@ -27,9 +26,7 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
         
         m_fields->lockButton = CCMenuItemSpriteExtra::create(
             initialSprite, this,
-            menu_selector(
-                LockMobilePreviewLayer::onToggleLock
-                )
+            menu_selector(LockMobilePreviewLayer::onToggleLock)
             );
         settingsMenu->addChild(m_fields->lockButton);
         settingsMenu->updateLayout();
@@ -38,28 +35,25 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
     }
 
     void updateLockButtonSprite() {
-        if (m_fields->previewLocked) {
-            m_fields->lockButton->setSprite(
-                CCSprite::createWithSpriteFrameName("GJ_lock_open_001.png")
-                );
-        }
-        else {
-            m_fields->lockButton->setSprite(
-                CCSprite::createWithSpriteFrameName("GJ_lock_001.png")
-                );
-        }
+        auto spriteName = (
+            m_fields->previewLocked
+            ? "GJ_lock_open_001.png"
+            : "GJ_lock_001.png");
+        
+        m_fields->lockButton->setSprite(
+            CCSprite::createWithSpriteFrameName(spriteName));
     }
 
     void onToggleLock(CCObject* target) {
         if (!m_fields->previewLocked) {
             lockPreview();
-            updateLockButtonSprite();
-            m_fields->previewLocked = true;
-            return;
         }
+        else {
+            unlockPreview();
+        }
+        
         updateLockButtonSprite();
-        m_fields->previewLocked = false;
-        unlockPreview();
+        m_fields->previewLocked = !m_fields->previewLocked;
     }
 
     void keyPress(enumKeyCodes key) {
