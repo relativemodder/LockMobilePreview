@@ -46,6 +46,16 @@ class $modify(LockMobilePreviewLayer, EditorUI) {
             CCSprite::createWithSpriteFrameName(spriteName));
     }
 
+    void onPlaytest(CCObject* pSender) {
+        EditorUI::onPlaytest(pSender);
+        m_fields->lockButton->setOpacity(0x1);
+    }
+
+    void playtestStopped() {
+        EditorUI::playtestStopped();
+        m_fields->lockButton->setOpacity(0xFF);
+    }
+
     void onToggleLock(CCObject* target) {
         if (!m_fields->previewLocked) {
             lockPreview();
